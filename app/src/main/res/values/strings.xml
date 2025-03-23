@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Vasundhara_Admin</string>
+    <string-array name="equipment_categories">
+        <item>Tractor</item>
+        <item>Harvester</item>
+        <item>Irrigation Equipment</item>
+        <item>Plowing Machine</item>
+        <item>Fertilizer Spreader</item>
+    </string-array>
+
+    <string-array name="availability_options">
+        <item>In Stock</item>
+        <item>Out of Stock</item>
+    </string-array>
+
 </resources>

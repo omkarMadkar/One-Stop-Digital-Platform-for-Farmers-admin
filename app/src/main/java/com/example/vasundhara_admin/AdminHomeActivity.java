@@ -1,11 +1,20 @@
 package com.example.vasundhara_admin;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import okhttp3.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,43 +23,82 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class AdminHomeActivity extends AppCompatActivity {
-    private static final String API_KEY = "AIzaSyCCR_eKo8KNeuhpC6JKkSlZJJTwRuy9og8"; // Replace with a secured API Key
+    private static final String API_KEY = "AIzaSyCCR_eKo8KNeuhpC6JKkSlZJJTwRuy9og8"; // Replace with secured API Key
     private static final String URL = "https://translation.googleapis.com/language/translate/v2";
 
-    private TextView translatedTextView;
-    private Button btn, btnPostEquipment, btnTransactions, btnNotifications, btnFeedback;
+    private TextView usernameTextView;
+    private Button btn, btnPostEquipment, btnOpenStore, btnNotifications;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_home_activity); // Ensure XML file matches
 
-        translatedTextView = findViewById(R.id.translatedTextView);
+
+        usernameTextView = findViewById(R.id.username); // Reference to username TextView
         btn = findViewById(R.id.btn1);
         btnPostEquipment = findViewById(R.id.btn_post_equipment);
-        btnTransactions = findViewById(R.id.btn_transactions);
-        btnNotifications = findViewById(R.id.btn_notifications);
-        btnFeedback = findViewById(R.id.btn_feedback);
+        btnOpenStore = findViewById(R.id.openStore);
+        Button btnNotifications = findViewById(R.id.btnNotifications);
+
+        // Fetch Admin Name from Firebase
+        fetchAdminName();
 
         // Set Click Listeners for Navigation
         btnPostEquipment.setOnClickListener(view -> openActivity(PostEquipmentActivity.class));
-        btnTransactions.setOnClickListener(view -> openActivity(TransactionsActivity.class));
-        btnNotifications.setOnClickListener(view -> openActivity(NotificationsActivity.class));
-        btnFeedback.setOnClickListener(view -> openActivity(FeedbackActivity.class));
+        btnOpenStore.setOnClickListener(view -> openActivity(OpenStore.class));
+
+        btnNotifications.setOnClickListener(v -> openActivity(Notification.class));
+
 
         // Translate button labels when clicked
-        btn.setOnClickListener(v -> {
-            translateText("Post Equipment", btnPostEquipment);
-            translateText("Transactions", btnTransactions);
-            translateText("Notifications", btnNotifications);
-            translateText("Feedback", btnFeedback);
-        });
+        btn.setOnClickListener(v -> translateText("Post Equipment", btnPostEquipment));
     }
 
     private void openActivity(Class<?> activityClass) {
         Intent intent = new Intent(AdminHomeActivity.this, activityClass);
         startActivity(intent);
     }
+
+    // Fetch Admin Name from Firebase Database
+    private void fetchAdminName() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String adminId = user.getUid(); // Get Admin ID
+        Log.d("FirebaseDebug", "Admin ID: " + adminId); // Debugging Log
+
+        DatabaseReference adminRef = FirebaseDatabase.getInstance()
+                .getReference("Admin")
+                .child(adminId)
+                .child("name");
+
+        adminRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String adminName = snapshot.getValue(String.class);
+                    Log.d("FirebaseDebug", "Admin Name: " + adminName); // Debugging Log
+                    usernameTextView.setText(adminName);
+                } else {
+                    Log.e("FirebaseDebug", "Admin Name does not exist");
+                    usernameTextView.setText("Admin");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("FirebaseDebug", "Firebase Error: " + error.getMessage());
+                Toast.makeText(AdminHomeActivity.this, "Failed to load Admin Name", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // Function to handle translation
     private void translateText(String textToTranslate, Button targetButton) {

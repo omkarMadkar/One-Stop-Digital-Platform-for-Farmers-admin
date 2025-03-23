@@ -1,33 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center"
-    android:background="#FAFAFA">
+    tools:context=".PostEquipmentActivity">
+
+    <!-- Equipment Name -->
+
+    <!-- Category -->
+
+    <!-- Condition (New/Used) -->
+
+    <!-- Price -->
+
+    <RadioGroup
+        android:id="@+id/rgCondition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEquipmentName">
+
+        <RadioButton
+            android:id="@+id/rbNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New" />
+
+        <RadioButton
+            android:id="@+id/rbUsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Used" />
+    </RadioGroup>
 
     <EditText
-        android:id="@+id/etName"
-        android:layout_width="match_parent"
+        android:id="@+id/etEquipmentPrice"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Equipment Name"/>
+        android:layout_marginTop="8dp"
+        android:hint="Enter Price"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rgCondition" />
 
     <EditText
-        android:id="@+id/etPrice"
-        android:layout_width="match_parent"
+        android:id="@+id/etLocation"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Price"/>
+        android:layout_marginTop="32dp"
+        android:hint="Enter Location"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etContact" />
 
     <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="match_parent"
+        android:id="@+id/etContact"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Description"/>
+        android:layout_marginTop="16dp"
+        android:hint="Enter Contact Number"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEquipmentPrice" />
 
+    <EditText
+        android:id="@+id/etEquipmentDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="Enter Description"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etLocation" />
+
+    <EditText
+        android:id="@+id/etEquipmentName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:hint="Enter Equipment Name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- Contact -->
+
+    <!-- Location -->
+
+    <!-- Description -->
+
+    <!-- Submit Button -->
     <Button
-        android:id="@+id/btnPost"
-        android:layout_width="match_parent"
+        android:id="@+id/btnSubmitEquipment"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Post Equipment"/>
-</LinearLayout>
+        android:text="Submit"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/etEquipmentDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
